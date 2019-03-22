@@ -11,10 +11,10 @@ t=np.where(y==0, -1, y)#Replaces class 0 to class -1
 
 plt.figure(1)   
 """
-wTx=w_Transpose*x
+wTx=(w_Transpose)*x
 E=Error
 """
-E=0
+E=0 #setting inital error to 0
 w=np.random.rand(3)#Forming the initial value of w which is a set of 3 points between 0 and 1
 w_T=w.T#Finding the transpose of w
 learning_parameter=0.01
