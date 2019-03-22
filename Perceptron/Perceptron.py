@@ -11,11 +11,13 @@ class Perceptron(object):
         self.X = X
         self.y = y
         self.t = t
+        # TODO: Make E and del_E arrays
         self.E=0 #setting inital error to 0
         self.w=np.random.rand(3)#Forming the initial value of w which is a set of 3 points between 0 and 1
         self.w_T=self.w.T#Finding the transpose of w
         self.learning_parameter = learning_parameter
         self.del_E = 0
+        #Needed?
         plt.figure(1)
 
     def scatterplotting(self,count):
@@ -77,6 +79,7 @@ if __name__ == '__main__':
     parser.add_argument('-c', metavar='total_cycles', type=int, default=20,help='Number of cycles')
     args = parser.parse_args()
 
+    # TODO: Save in different folders
     dataset=pd.read_csv("../datasets/dataset_1.csv", header=None)#Reading the dataset
     dataset.insert(1,'bias',1)#addind the bias component to the dataframe
     X = dataset.iloc[:, 1:4].values
