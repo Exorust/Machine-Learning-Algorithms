@@ -17,6 +17,7 @@ class Perceptron:
         self.E = np.zeros(self.total_cycles)  # setting inital error to 0
         self.del_E = np.zeros((self.total_cycles, 3))
         # Forming the initial value of w which is a set of 3 points between 0 and 1
+        random.seed(9001)
         self.w = np.random.rand(3)
         self.w_T = self.w.T  # Finding the transpose of w
         self.learning_parameter = learning_parameter
