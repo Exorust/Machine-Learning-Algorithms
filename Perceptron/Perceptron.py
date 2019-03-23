@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt
 
 class Perceptron:
     """Generates a perceptron
-    
+
     """
 
-    def __init__(self, X, t, total_cycles, learning_parameter=0.01):
+    def __init__(self, X, t, total_cycles,filetype, learning_parameter=0.01):
         self.X = X
         self.t = t
         self.total_cycles = total_cycles
@@ -20,6 +20,7 @@ class Perceptron:
         self.w = np.random.rand(3)
         self.w_T = self.w.T  # Finding the transpose of w
         self.learning_parameter = learning_parameter
+        self.filetype = filetype
 
     def epoch(self, count):
         for i in range(self.X.shape[0]):
@@ -54,7 +55,7 @@ class Perceptron:
         # plotting the line that linearly separates class 1 and 0
         axes.plot(x, -(self.w_T[0] / self.w_T[2]) -
                   (self.w_T[1] / self.w_T[2]) * x, 'k')
-        plt.savefig('Scatterplots/foo' + str(count) + '.png')
+        plt.savefig('Scatterplots/'+filetype+'/Sc' + str(count) + '.png')
         plt.close()
         print("Finished plotting:" + str(count))
 
@@ -70,8 +71,9 @@ class Perceptron:
 
 
 class Testing:
-    def estimate_learning(self, total_cycles):
-        lp_possibilities = np.geomspace(0.001, 10, 10)
+    def estimate_learning(self, total_cycles,filetype):
+        lp_possibilities = np.geomspace(0.001, 10, 30)
+        numbering = 1
 
         for learning_parameter in lp_possibilities:
             percep = Perceptron(X, t, total_cycles, learning_parameter)
@@ -85,7 +87,8 @@ class Testing:
             axes.set_xlabel("Number of Iterations")
             axes.set_ylabel("Error")
 
-            plt.savefig('Learning' + str(learning_parameter) + '.png')
+            plt.savefig('Learning/'+filetype+'/Learning' + str(numbering) + " " + str(learning_parameter) + '.png')
+            numbering += 1
             print("Finished estimating:" + str(learning_parameter) + "\n\n")
 
 
@@ -95,17 +98,18 @@ if __name__ == '__main__':
                         type=int, default=20, help='Number of cycles')
     args = parser.parse_args()
 
-    # TODO: Save in different folders
-    dataset = pd.read_csv("../datasets/dataset_1.csv",
-                          header=None)  # Reading the dataset
+    filetype = "dataset_2"
+    filestring = "../datasets/"+filetype+".csv"
+    dataset = pd.read_csv(filestring,
+                          header=None)
     dataset.insert(1, 'bias', 1)  # addind the bias component to the dataframe
     X = dataset.iloc[:, 1:4].values
     y = dataset.iloc[:, -1].values
     t = np.where(y == 0, -1, y)  # Replaces class 0 to class -1
     # print(t.shape[0])
     learning_parameter = 0.01
-    percep = Perceptron(X, t, args.c, learning_parameter)
+    percep = Perceptron(X, t, args.c,filetype, learning_parameter)
     percep.compute()
 
     # test = Testing()
-    # test.estimate_learning(100)
+    # test.estimate_learning(100,filetype)
